@@ -544,6 +544,8 @@ void bta_hh_open_cmpl_act(tBTA_HH_DEV_CB *p_cb, tBTA_HH_DATA *p_data)
     /* increase connection number */
     bta_hh_cb.cnt_num ++;
 
+    /* inform role manager */
+    bta_sys_conn_open(BTA_ID_HH, p_cb->app_id, p_cb->addr);
     /* initialize device driver */
     bta_hh_co_open(p_cb->hid_handle, p_cb->sub_class,
                        p_cb->attr_mask,  p_cb->app_id);
@@ -892,6 +894,7 @@ void bta_hh_maint_dev_act(tBTA_HH_DEV_CB *p_cb, tBTA_HH_DATA *p_data)
     {
     case BTA_HH_ADD_DEV_EVT:    /* add a device */
         bdcpy(dev_info.bda, p_dev_info->bda);
+        dev_info.priority = p_dev_info->priority;
         /* initialize callback data */
         if (p_cb->hid_handle == BTA_HH_INVALID_HANDLE)
         {
